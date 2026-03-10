@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+<html lang="th" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Metha Putthaseng — Full Stack Developer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Mono:wght@400;500&family=Sarabun:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:        #f5f4f0;
+  --bg2:       #eceae4;
+  --surface:   #ffffff;
+  --surface2:  #f0efe9;
+  --border:    #e0ddd5;
+  --text:      #1a1916;
+  --text2:     #5a574f;
+  --text3:     #9a9690;
+  --accent:    #c8922a;
+  --accent2:   #e8aa40;
+  --accent-bg: #fdf3e3;
+  --green:     #2d6a4f;
+  --green-bg:  #e8f5ee;
+  --orange:    #c45c2a;
+  --orange-bg: #fdf0e8;
+  --shadow:    0 1px 3px rgba(0,0,0,.08), 0 4px 16px rgba(0,0,0,.06);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,.12);
+  --radius:    12px;
+  --ease:      cubic-bezier(.4,0,.2,1);
+}
+[data-theme="dark"] {
+  --bg:        #0f1117;
+  --bg2:       #161b24;
+  --surface:   #1c2230;
+  --surface2:  #222940;
+  --border:    #2e3650;
+  --text:      #e8e6e0;
+  --text2:     #9aa0b8;
+  --text3:     #5a6070;
+  --accent:    #e8aa40;
+  --accent2:   #f0c060;
+  --accent-bg: #2a2010;
+  --green:     #4caf80;
+  --green-bg:  #0f2a1c;
+  --orange:    #e07040;
+  --orange-bg: #2a150a;
+  --shadow:    0 1px 3px rgba(0,0,0,.3), 0 4px 16px rgba(0,0,0,.2);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,.4);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'DM Sans','Sarabun',sans-serif;background:var(--bg);color:var(--text);
+  line-height:1.6;overflow-x:hidden;
+  transition:background .25s var(--ease),color .25s var(--ease);
+}
+a{text-decoration:none;color:inherit}
+ul{list-style:none}
+body::before{
+  content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);
+  background-size:60px 60px;opacity:.3;transition:opacity .25s var(--ease);
+}
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-track{background:var(--bg2)}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+.wrap{max-width:1080px;margin:0 auto;padding:0 24px;position:relative;z-index:1}
+
+/* ── TAG ── */
+.tag{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;
+  letter-spacing:.04em;text-transform:uppercase;padding:3px 10px;border-radius:100px;
+  font-family:'DM Mono',monospace}
+.tag-g{background:var(--green-bg);color:var(--green)}
+.tag-o{background:var(--orange-bg);color:var(--orange)}
+.dot{width:6px;height:6px;border-radius:50%;background:currentColor;flex-shrink:0}
+.pulse{animation:pulse 1.8s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
+
+/* ── NAV ── */
+#nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;height:60px;
+  display:flex;align-items:center;
+  background:color-mix(in srgb,var(--bg) 82%,transparent);
+  backdrop-filter:blur(16px) saturate(1.8);
+  border-bottom:1px solid var(--border);
+  transition:background .25s var(--ease),border-color .25s var(--ease);
+}
+.nav-in{display:flex;align-items:center;justify-content:space-between;width:100%;max-width:1080px;margin:0 auto;padding:0 24px}
+.logo{font-family:'Outfit','Sarabun',sans-serif;font-weight:900;font-size:18px;letter-spacing:-.02em;color:var(--text)}
+.logo em{color:var(--accent);font-style:normal}
+.nav-links{display:flex;align-items:center;gap:2px}
+.nav-links a{font-size:13.5px;font-weight:500;color:var(--text2);padding:5px 13px;border-radius:7px;
+  transition:color .2s,background .2s}
+.nav-links a:hover,.nav-links a.act{color:var(--text);background:var(--surface2)}
+.nav-c{display:flex;align-items:center;gap:8px}
+.ctrl{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;
+  font-family:'DM Mono',monospace;padding:5px 12px;border-radius:8px;
+  border:1px solid var(--border);background:var(--surface);color:var(--text2);
+  cursor:pointer;transition:all .2s}
+.ctrl:hover{background:var(--surface2);color:var(--text)}
+.ctrl svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.burger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:7px;
+  border-radius:8px;border:1px solid var(--border);background:var(--surface)}
+.burger span{display:block;width:17px;height:2px;background:var(--text);border-radius:2px;transition:all .2s}
+.mob-menu{display:none;position:fixed;top:60px;left:0;right:0;z-index:99;
+  background:var(--surface);border-bottom:1px solid var(--border);
+  padding:14px 24px 20px;flex-direction:column;gap:3px;box-shadow:var(--shadow-lg)}
+.mob-menu a{font-size:15px;font-weight:500;padding:9px 12px;border-radius:8px;color:var(--text2);transition:all .2s}
+.mob-menu a:hover{color:var(--text);background:var(--surface2)}
+.mob-menu.open{display:flex}
+
+/* ── HERO ── */
+#hero{min-height:100vh;display:flex;align-items:center;padding:80px 0 60px}
+.hero-g{display:grid;grid-template-columns:1fr auto;gap:60px;align-items:center}
+.eyebrow{display:flex;align-items:center;gap:10px;font-size:11.5px;font-weight:600;
+  letter-spacing:.07em;text-transform:uppercase;color:var(--text3);
+  font-family:'DM Mono',monospace;margin-bottom:22px;
+  opacity:0;animation:fadeUp .6s .1s forwards}
+.eyebrow::before{content:'';width:28px;height:1px;background:var(--accent);flex-shrink:0}
+.hero-name{font-family:'Outfit','Sarabun',sans-serif;font-weight:900;
+  font-size:clamp(44px,6.5vw,84px);line-height:1.0;letter-spacing:-.03em;
+  color:var(--text);margin-bottom:14px;
+  opacity:0;animation:fadeUp .6s .2s forwards}
+.hero-name em{color:var(--accent);font-style:normal}
+.hero-role{font-size:clamp(16px,2.2vw,21px);font-weight:300;color:var(--text2);
+  margin-bottom:20px;opacity:0;animation:fadeUp .6s .3s forwards}
+.hero-desc{font-size:14.5px;line-height:1.8;color:var(--text2);max-width:500px;
+  margin-bottom:36px;opacity:0;animation:fadeUp .6s .4s forwards}
+.actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+  opacity:0;animation:fadeUp .6s .5s forwards}
+.btn-p{display:inline-flex;align-items:center;gap:7px;padding:11px 26px;border-radius:9px;
+  font-weight:600;font-size:13.5px;background:var(--accent);color:#fff;
+  border:none;cursor:pointer;transition:all .22s;
+  box-shadow:0 3px 12px color-mix(in srgb,var(--accent) 40%,transparent)}
+.btn-p:hover{transform:translateY(-2px);box-shadow:0 5px 18px color-mix(in srgb,var(--accent) 50%,transparent)}
+.btn-s{display:inline-flex;align-items:center;gap:7px;padding:11px 26px;border-radius:9px;
+  font-weight:600;font-size:13.5px;background:var(--surface);color:var(--text);
+  border:1px solid var(--border);cursor:pointer;transition:all .22s}
+.btn-s:hover{background:var(--surface2);transform:translateY(-2px)}
+.stats{display:flex;gap:28px;padding-top:36px;border-top:1px solid var(--border);margin-top:36px;
+  opacity:0;animation:fadeUp .6s .6s forwards}
+.snum{font-family:'Outfit','Sarabun',sans-serif;font-size:30px;font-weight:900;color:var(--text);
+  letter-spacing:-.02em;line-height:1}
+.snum em{color:var(--accent);font-style:normal}
+.slbl{font-size:11px;color:var(--text3);margin-top:3px;font-weight:500;
+  text-transform:uppercase;letter-spacing:.05em}
+.avatar-wrap{opacity:0;animation:fadeIn .8s .35s forwards;position:relative}
+.avatar{width:210px;height:210px;border-radius:22px;
+  background:linear-gradient(135deg,var(--surface2),var(--surface));
+  border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Outfit','Sarabun',sans-serif;font-weight:900;font-size:68px;color:var(--accent);
+  box-shadow:var(--shadow-lg);position:relative;overflow:hidden}
+.avatar::after{content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,color-mix(in srgb,var(--accent) 10%,transparent),transparent)}
+.badge{position:absolute;bottom:-10px;right:-10px;
+  background:var(--surface);border:1px solid var(--border);border-radius:11px;
+  padding:9px 13px;font-size:10.5px;font-weight:600;color:var(--text2);
+  box-shadow:var(--shadow);font-family:'DM Mono',monospace;display:flex;flex-direction:column;gap:1px}
+.badge strong{color:var(--accent);font-size:15px;font-family:'Outfit','Sarabun',sans-serif;font-weight:800}
+
+/* ── SECTION ── */
+.sec{padding:88px 0}
+.sec-lbl{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--accent);font-family:'DM Mono',monospace;margin-bottom:10px;
+  display:flex;align-items:center;gap:8px}
+.sec-lbl::before{content:'';width:22px;height:2px;background:var(--accent);border-radius:1px;flex-shrink:0}
+.sec-ttl{font-family:'Outfit','Sarabun',sans-serif;font-weight:800;
+  font-size:clamp(28px,3.5vw,42px);letter-spacing:-.02em;color:var(--text);line-height:1.15}
+.sec-sub{font-size:14.5px;color:var(--text2);margin-top:10px;max-width:460px;line-height:1.7}
+.sec-hdr{margin-bottom:48px}
+.divider{height:1px;background:var(--border)}
+
+/* ── RESUME GRID ── */
+.rg{display:grid;grid-template-columns:1fr 340px;gap:52px;align-items:start}
+
+/* ── TIMELINE ── */
+.tl{position:relative}
+.tl::before{content:'';position:absolute;left:19px;top:4px;bottom:4px;width:2px;
+  background:linear-gradient(to bottom,var(--accent),var(--border) 85%);border-radius:2px}
+.tli{display:flex;gap:22px;position:relative;padding-bottom:32px;
+  opacity:0;transform:translateY(18px);transition:opacity .5s,transform .5s}
+.tli.vis{opacity:1;transform:none}
+.tl-dot{flex-shrink:0;width:40px;height:40px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;font-size:16px;z-index:1;
+  border:3px solid var(--bg);box-shadow:0 0 0 1px var(--border);transition:transform .2s}
+.tli:hover .tl-dot{transform:scale(1.1)}
+.tl-card{flex:1;background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);padding:18px 22px;box-shadow:var(--shadow);
+  transition:box-shadow .22s,border-color .22s,transform .22s}
+.tl-card:hover{box-shadow:var(--shadow-lg);
+  border-color:color-mix(in srgb,var(--accent) 30%,var(--border));transform:translateX(4px)}
+.tl-role{font-family:'Outfit','Sarabun',sans-serif;font-weight:700;font-size:15.5px;
+  color:var(--text);margin-bottom:3px}
+.tl-co{font-size:13.5px;font-weight:600;color:var(--accent);margin-bottom:3px}
+.tl-dt{font-size:11.5px;color:var(--text3);font-family:'DM Mono',monospace;margin-bottom:12px}
+.tl-ul{padding-left:14px}
+.tl-ul li{font-size:13px;color:var(--text2);line-height:1.7;position:relative}
+.tl-ul li::before{content:'–';position:absolute;left:-14px;color:var(--accent)}
+
+/* ── SIDEBAR ── */
+.sb{display:flex;flex-direction:column;gap:18px}
+.card{background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);padding:20px;box-shadow:var(--shadow)}
+.card-ttl{font-family:'Outfit','Sarabun',sans-serif;font-weight:700;font-size:14px;
+  color:var(--text);margin-bottom:14px;padding-bottom:10px;
+  border-bottom:1px solid var(--border);display:flex;align-items:center;gap:7px}
+.card-ttl svg{width:14px;height:14px;stroke:var(--accent);fill:none;stroke-width:2;
+  stroke-linecap:round;stroke-linejoin:round}
+.irow{display:flex;justify-content:space-between;align-items:center;
+  font-size:13px;margin-bottom:8px}
+.irow:last-child{margin-bottom:0}
+.ikey{color:var(--text3);font-weight:500}
+.ival{color:var(--text);font-weight:600;text-align:right}
+.sk-row{margin-bottom:12px}
+.sk-row:last-child{margin-bottom:0}
+.sk-inf{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px}
+.sk-name{font-size:12.5px;font-weight:500;color:var(--text)}
+.sk-lvl{font-size:10.5px;color:var(--text3);font-family:'DM Mono',monospace}
+.sk-bar{height:4px;background:var(--border);border-radius:2px;overflow:hidden}
+.sk-fill{height:100%;border-radius:2px;background:linear-gradient(90deg,var(--accent),var(--accent2));
+  width:0;transition:width 1s var(--ease)}
+.sk-fill.anim{width:var(--pct)}
+.lang-r{display:flex;justify-content:space-between;align-items:center;margin-bottom:9px}
+.lang-r:last-child{margin-bottom:0}
+.lpips{display:flex;gap:3px}
+.lp{width:18px;height:5px;border-radius:2px;background:var(--border)}
+.lp.on{background:var(--accent)}
+
+/* ── PORTFOLIO ── */
+#portfolio{background:var(--bg2)}
+.pl{display:flex;flex-direction:column;gap:14px}
+.pc{background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);padding:24px 28px;
+  display:grid;grid-template-columns:auto 1fr auto;gap:22px;align-items:center;
+  box-shadow:var(--shadow);transition:all .22s;position:relative;overflow:hidden;
+  opacity:0;transform:translateY(14px)}
+.pc.vis{opacity:1;transform:none}
+.pc::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;
+  background:var(--cac,var(--accent));border-radius:3px 0 0 3px;
+  transform:scaleY(0);transform-origin:bottom;transition:transform .22s}
+.pc:hover{box-shadow:var(--shadow-lg);
+  border-color:color-mix(in srgb,var(--cac,var(--accent)) 28%,var(--border));
+  transform:translateY(-2px)}
+.pc:hover::before{transform:scaleY(1)}
+.pi{width:50px;height:50px;border-radius:13px;flex-shrink:0;display:flex;
+  align-items:center;justify-content:center;font-size:22px;
+  background:var(--cib,var(--accent-bg));transition:transform .22s}
+.pc:hover .pi{transform:scale(1.08) rotate(-4deg)}
+.pm{min-width:0}
+.pname{font-family:'Outfit','Sarabun',sans-serif;font-weight:700;font-size:16px;color:var(--text);
+  margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pdesc{font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:8px}
+.chips{display:flex;gap:5px;flex-wrap:wrap}
+.chip{font-size:10.5px;font-weight:500;font-family:'DM Mono',monospace;
+  padding:2px 8px;border-radius:5px;background:var(--surface2);
+  color:var(--text3);border:1px solid var(--border)}
+.pr{display:flex;flex-direction:column;align-items:flex-end;gap:7px;flex-shrink:0}
+.pr-org{font-size:10.5px;color:var(--text3);font-family:'DM Mono',monospace;white-space:nowrap}
+
+/* ── COLLAB ── */
+.cg{display:flex;gap:18px;flex-wrap:wrap;margin-top:56px}
+.cc{flex:1;min-width:160px;background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);padding:22px 18px;display:flex;flex-direction:column;
+  align-items:center;gap:10px;box-shadow:var(--shadow);text-align:center;
+  transition:all .22s;opacity:0;transform:translateY(14px)}
+.cc.vis{opacity:1;transform:none}
+.cc:hover{box-shadow:var(--shadow-lg);transform:translateY(-4px);
+  border-color:color-mix(in srgb,var(--accent) 30%,var(--border))}
+.cl-logo{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;
+  justify-content:center;font-family:'Outfit','Sarabun',sans-serif;font-weight:800;
+  font-size:12px;color:#fff;letter-spacing:.02em}
+.cl-name{font-family:'Outfit','Sarabun',sans-serif;font-weight:700;font-size:13.5px;color:var(--text)}
+.cl-sub{font-size:11px;color:var(--text3)}
+
+/* ── CONTACT ── */
+.con-g{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start}
+.con-h{font-family:'Outfit','Sarabun',sans-serif;font-weight:800;
+  font-size:clamp(26px,3vw,40px);letter-spacing:-.02em;color:var(--text);
+  line-height:1.2;margin-bottom:14px}
+.con-h em{color:var(--accent);font-style:normal}
+.con-b{font-size:14.5px;color:var(--text2);line-height:1.8;margin-bottom:28px}
+.con-links{display:flex;flex-direction:column;gap:10px}
+.clink{display:flex;align-items:center;gap:11px;padding:13px 16px;
+  border-radius:9px;border:1px solid var(--border);background:var(--surface);
+  font-size:13.5px;font-weight:500;color:var(--text2);box-shadow:var(--shadow);
+  transition:all .22s}
+.clink:hover{background:var(--surface2);color:var(--text);transform:translateX(4px);
+  border-color:color-mix(in srgb,var(--accent) 30%,var(--border))}
+.clink svg{width:17px;height:17px;stroke:var(--accent);fill:none;stroke-width:2;
+  stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+.clink strong{color:var(--text)}
+.con-r{background:var(--surface);border:1px solid var(--border);
+  border-radius:14px;padding:30px;box-shadow:var(--shadow)}
+.avail{display:flex;align-items:center;gap:9px;margin-bottom:22px;padding:10px 14px;
+  border-radius:9px;background:var(--green-bg);
+  border:1px solid color-mix(in srgb,var(--green) 20%,transparent)}
+.adot{width:9px;height:9px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
+.atxt{font-size:12.5px;font-weight:600;color:var(--green)}
+.ci-list{display:flex;flex-direction:column;gap:13px}
+.ci-row{display:flex;align-items:flex-start;gap:11px;font-size:13.5px}
+.ci-ico{font-size:15px;flex-shrink:0;margin-top:1px}
+.ci-lbl{color:var(--text3);font-size:11px;margin-bottom:2px;font-family:'DM Mono',monospace}
+.ci-val{color:var(--text);font-weight:500}
+.soc{display:flex;gap:10px;margin-top:24px;padding-top:20px;border-top:1px solid var(--border)}
+.sb-btn{display:flex;align-items:center;gap:6px;padding:8px 14px;border-radius:7px;
+  border:1px solid var(--border);font-size:12.5px;font-weight:600;
+  color:var(--text2);background:var(--surface2);transition:all .2s}
+.sb-btn:hover{color:var(--text);background:var(--surface);transform:translateY(-2px);box-shadow:var(--shadow)}
+.sb-btn svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;
+  stroke-linecap:round;stroke-linejoin:round}
+
+/* ── FOOTER ── */
+footer{padding:24px 0;border-top:1px solid var(--border);background:var(--surface)}
+.ft{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
+.ft-copy{font-size:12.5px;color:var(--text3);font-family:'DM Mono',monospace}
+.ft-r{font-size:12px;color:var(--text3)}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+
+/* ── RESPONSIVE ── */
+@media(max-width:860px){
+  .hero-g{grid-template-columns:1fr}
+  .avatar-wrap{display:none}
+  .rg{grid-template-columns:1fr}
+  .con-g{grid-template-columns:1fr}
+  .nav-links{display:none}
+  .burger{display:flex}
+  .pc{grid-template-columns:auto 1fr}
+  .pr{display:none}
+}
+@media(max-width:560px){
+  .stats{flex-wrap:wrap;gap:18px}
+  .cg{flex-direction:column}
+  .pc{padding:18px}
+  .sec{padding:64px 0}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="nav-in">
+    <div class="logo">MP<em>.</em></div>
+    <div class="nav-links" id="navLinks">
+      <a href="#hero"      data-sec="hero"      data-k="navHome">หน้าแรก</a>
+      <a href="#resume"    data-sec="resume"    data-k="navResume">ประวัติ</a>
+      <a href="#portfolio" data-sec="portfolio" data-k="navPortfolio">ผลงาน</a>
+      <a href="#contact"   data-sec="contact"   data-k="navContact">ติดต่อ</a>
+    </div>
+    <div class="nav-c">
+      <button class="ctrl" id="langBtn">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 1 0 20M2 12h20"/></svg>
+        <span id="langLbl">EN</span>
+      </button>
+      <button class="ctrl" id="themeBtn">
+        <svg id="iSun"  viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+        <svg id="iMoon" viewBox="0 0 24 24" style="display:none"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <span id="themeLbl">Dark</span>
+      </button>
+      <button class="burger" id="burger"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</nav>
+<div class="mob-menu" id="mobMenu">
+  <a href="#hero"      data-k="navHome">หน้าแรก</a>
+  <a href="#resume"    data-k="navResume">ประวัติ</a>
+  <a href="#portfolio" data-k="navPortfolio">ผลงาน</a>
+  <a href="#contact"   data-k="navContact">ติดต่อ</a>
+</div>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="wrap">
+    <div class="hero-g">
+      <div>
+        <div class="eyebrow">
+          <span class="dot pulse" style="background:var(--green)"></span>
+          <span data-k="heroEye">พร้อมรับงานใหม่ · Available for hire</span>
+        </div>
+        <h1 class="hero-name">Metha<br><em>Putthaseng</em></h1>
+        <p class="hero-role" data-k="heroRole">Full Stack Developer &amp; Backend Engineer</p>
+        <p class="hero-desc" data-k="heroDesc">นักพัฒนาระบบกว่า 5 ปี เชี่ยวชาญ PHP · Python · Rust และ modern JS frameworks สร้างระบบที่มั่นคง รวดเร็ว และตอบโจทย์ธุรกิจ</p>
+        <div class="actions">
+          <a href="#portfolio" class="btn-p" data-k="heroBtnWork">ดูผลงาน</a>
+          <a href="#contact"   class="btn-s" data-k="heroBtnContact">ติดต่อฉัน</a>
+        </div>
+        <div class="stats">
+          <div><div class="snum">5<em>+</em></div><div class="slbl" data-k="statYears">ปีประสบการณ์</div></div>
+          <div><div class="snum">20<em>+</em></div><div class="slbl" data-k="statProj">ระบบที่พัฒนา</div></div>
+          <div><div class="snum">3</div><div class="slbl" data-k="statOrg">องค์กรชั้นนำ</div></div>
+        </div>
+      </div>
+      <div class="avatar-wrap">
+        <div class="avatar">M</div>
+        <div class="badge">
+          <div style="font-size:9.5px;color:var(--text3)">EXPECT. SALARY</div>
+          <strong>30–35K</strong>
+          <div style="font-size:9.5px;color:var(--text3)">THB / month</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- RESUME -->
+<section id="resume" class="sec">
+  <div class="wrap">
+    <div class="sec-hdr">
+      <div class="sec-lbl" data-k="resLbl">Experience</div>
+      <h2 class="sec-ttl" data-k="resTtl">ประสบการณ์ &amp; ทักษะ</h2>
+      <p class="sec-sub" data-k="resSub">เส้นทางการทำงาน 5+ ปี ผ่านหลากหลายอุตสาหกรรม</p>
+    </div>
+    <div class="rg">
+      <!-- Timeline -->
+      <div class="tl" id="tl">
+
+        <div class="tli" data-d="50">
+          <div class="tl-dot" style="background:color-mix(in srgb,var(--accent) 15%,var(--surface))">🚀</div>
+          <div class="tl-card">
+            <div class="tl-role" data-k="r0role">Full Stack Developer</div>
+            <div class="tl-co"   data-k="r0co">NC Entertainment Co., Ltd.</div>
+            <div class="tl-dt"   data-k="r0dt">ม.ค. 2569 – ปัจจุบัน</div>
+            <ul class="tl-ul"    data-k="r0li">
+              <li>ออกแบบและพัฒนา RESTful API และโครงสร้างฐานข้อมูล</li>
+              <li>พัฒนาระบบ Payroll และ Asset Management</li>
+              <li>พัฒนาระบบ Real-time Chat ด้วย WebSocket + Cloud</li>
+              <li>จัดการ Docker environment สำหรับ Deploy ระบบ</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="tli" data-d="100">
+          <div class="tl-dot" style="background:color-mix(in srgb,#4a90d9 15%,var(--surface))">💻</div>
+          <div class="tl-card">
+            <div class="tl-role" data-k="r1role">Full Stack Developer</div>
+            <div class="tl-co"   data-k="r1co">ITBOXDESIGN Company Limited</div>
+            <div class="tl-dt"   data-k="r1dt">ม.ค. 2567 – ธ.ค. 2568</div>
+            <ul class="tl-ul"    data-k="r1li">
+              <li>พัฒนาและบำรุงรักษาเว็บไซต์ Production หลายโปรเจกต์</li>
+              <li>แก้ไข Security Vulnerabilities จากรายงาน Penetration Testing</li>
+              <li>เชื่อมต่อและใช้งาน Google Cloud Services</li>
+              <li>ตั้งค่าและดูแล Server สำหรับ Deploy เว็บไซต์</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="tli" data-d="150">
+          <div class="tl-dot" style="background:color-mix(in srgb,#e8aa40 15%,var(--surface))">📦</div>
+          <div class="tl-card">
+            <div class="tl-role" data-k="r2role">Full Stack Developer</div>
+            <div class="tl-co"   data-k="r2co">ServeRich Company Limited</div>
+            <div class="tl-dt"   data-k="r2dt">ก.พ. 2566 – ธ.ค. 2566</div>
+            <ul class="tl-ul"    data-k="r2li">
+              <li>พัฒนา Web App ระบบคลังสินค้าและ Fulfillment</li>
+              <li>ออกแบบโครงสร้างฐานข้อมูลตาม Business Requirements</li>
+              <li>ออกแบบและพัฒนา Report ระบบ</li>
+              <li>วิเคราะห์และแก้ไขปัญหา Production</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="tli" data-d="200">
+          <div class="tl-dot" style="background:color-mix(in srgb,#2d8a5f 15%,var(--surface))">🐺</div>
+          <div class="tl-card">
+            <div class="tl-role" data-k="r3role">Backend Developer</div>
+            <div class="tl-co"   data-k="r3co">Wolves Corporation</div>
+            <div class="tl-dt"   data-k="r3dt">ส.ค. 2563 – เม.ย. 2564</div>
+            <ul class="tl-ul"    data-k="r3li">
+              <li>พัฒนา RESTful API สำหรับ Web &amp; Mobile</li>
+              <li>ออกแบบฐานข้อมูลและ Automated Test ด้วย Python Selenium</li>
+              <li>แก้ไข Bug ผ่านกระบวนการ QA อย่างเป็นระบบ</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="tli" data-d="250">
+          <div class="tl-dot" style="background:color-mix(in srgb,#888 15%,var(--surface))">🏗️</div>
+          <div class="tl-card">
+            <div class="tl-role" data-k="r4role">Full Stack Developer</div>
+            <div class="tl-co"   data-k="r4co">Siphaya Construction Co., Ltd.</div>
+            <div class="tl-dt"   data-k="r4dt">ส.ค. 2562 – เม.ย. 2563</div>
+            <ul class="tl-ul"    data-k="r4li">
+              <li>พัฒนา Internal Web App ด้วย PHP CodeIgniter</li>
+              <li>ออกแบบฐานข้อมูลและทดสอบแอปพลิเคชัน</li>
+            </ul>
+          </div>
+        </div>
+
+      </div><!-- /tl -->
+
+      <!-- Sidebar -->
+      <div class="sb">
+
+        <div class="card">
+          <div class="card-ttl">
+            <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <span data-k="cInfo">ข้อมูลส่วนตัว</span>
+          </div>
+          <div class="irow"><span class="ikey" data-k="iAge">อายุ</span><span class="ival">26 ปี</span></div>
+          <div class="irow"><span class="ikey" data-k="iGen">เพศ</span><span class="ival" data-k="iGenV">ชาย</span></div>
+          <div class="irow"><span class="ikey" data-k="iHW">ส่วนสูง/น้ำหนัก</span><span class="ival">172 cm / 68 kg</span></div>
+          <div class="irow"><span class="ikey" data-k="iSt">สถานะ</span><span class="ival" data-k="iStV">โสด</span></div>
+          <div class="irow"><span class="ikey" data-k="iMil">การทหาร</span><span class="ival" data-k="iMilV">ผ่านแล้ว</span></div>
+          <div class="irow"><span class="ikey" data-k="iWm">รูปแบบงาน</span><span class="ival">Remote/Hybrid/Onsite</span></div>
+        </div>
+
+        <div class="card">
+          <div class="card-ttl">
+            <svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+            <span data-k="cSkill">ทักษะ</span>
+          </div>
+          <div class="sk-row"><div class="sk-inf"><span class="sk-name">PHP (Laravel)</span><span class="sk-lvl" data-k="lvEx">ดีเยี่ยม</span></div><div class="sk-bar"><div class="sk-fill" style="--pct:95%"></div></div></div>
+          <div class="sk-row"><div class="sk-inf"><span class="sk-name">Python</span><span class="sk-lvl" data-k="lvEx">ดีเยี่ยม</span></div><div class="sk-bar"><div class="sk-fill" style="--pct:90%"></div></div></div>
+          <div class="sk-row"><div class="sk-inf"><span class="sk-name">JavaScript / TypeScript</span><span class="sk-lvl" data-k="lvEx">ดีเยี่ยม</span></div><div class="sk-bar"><div class="sk-fill" style="--pct:90%"></div></div></div>
+          <div class="sk-row"><div class="sk-inf"><span class="sk-name">SQL</span><span class="sk-lvl" data-k="lvEx">ดีเยี่ยม</span></div><div class="sk-bar"><div class="sk-fill" style="--pct:88%"></div></div></div>
+          <div class="sk-row"><div class="sk-inf"><span class="sk-name">Rust</span><span class="sk-lvl" data-k="lvGd">ดี</span></div><div class="sk-bar"><div class="sk-fill" style="--pct:68%"></div></div></div>
+          <div class="sk-row"><div class="sk-inf"><span class="sk-name">Angular / React / Vue</span><span class="sk-lvl" data-k="lvMd">ปานกลาง</span></div><div class="sk-bar"><div class="sk-fill" style="--pct:62%"></div></div></div>
+          <div class="sk-row"><div class="sk-inf"><span class="sk-name">Docker / GCP / AWS</span><span class="sk-lvl" data-k="lvMd">ปานกลาง</span></div><div class="sk-bar"><div class="sk-fill" style="--pct:60%"></div></div></div>
+        </div>
+
+        <div class="card">
+          <div class="card-ttl">
+            <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            <span data-k="cLang">ภาษา</span>
+          </div>
+          <div class="lang-r"><span style="font-size:13px;font-weight:500;color:var(--text)" data-k="lTH">ภาษาไทย</span><div class="lpips"><div class="lp on"></div><div class="lp on"></div><div class="lp on"></div><div class="lp on"></div><div class="lp on"></div></div></div>
+          <div class="lang-r"><span style="font-size:13px;font-weight:500;color:var(--text)" data-k="lEN">ภาษาอังกฤษ</span><div class="lpips"><div class="lp on"></div><div class="lp on"></div><div class="lp on"></div><div class="lp"></div><div class="lp"></div></div></div>
+        </div>
+
+        <div class="card">
+          <div class="card-ttl">
+            <svg viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5-10-5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+            <span data-k="cEdu">การศึกษา</span>
+          </div>
+          <div style="margin-bottom:14px">
+            <div style="font-size:12.5px;font-weight:600;color:var(--text)" data-k="e1">ปวส. สาขาเทคโนโลยีสารสนเทศ</div>
+            <div style="font-size:11.5px;color:var(--text3);margin-top:2px" data-k="e1s">วิทยาลัยเทคโนโลยีอรรถวิทย์พณิชยการ</div>
+            <span class="tag tag-g" style="margin-top:6px;font-size:10px" data-k="e1d">2568 – ปัจจุบัน</span>
+          </div>
+          <div>
+            <div style="font-size:12.5px;font-weight:600;color:var(--text)" data-k="e2">ปวช. สาขาคอมพิวเตอร์ธุรกิจ</div>
+            <div style="font-size:11.5px;color:var(--text3);margin-top:2px" data-k="e2s">วิทยาลัยเทคโนโลยีอรรถวิทย์พณิชยการ</div>
+            <div style="font-size:11px;color:var(--text3);margin-top:4px;font-family:'DM Mono',monospace" data-k="e2d">2558 – 2561 · GPA 2.97</div>
+          </div>
+        </div>
+
+        <div class="card" style="background:var(--accent-bg);border-color:color-mix(in srgb,var(--accent) 25%,var(--border))">
+          <div style="font-size:26px;margin-bottom:7px">🏆</div>
+          <div style="font-family:'Outfit','Sarabun',sans-serif;font-weight:700;font-size:13.5px;color:var(--text)" data-k="aw">รางวัลแข่งขันทักษะวิชาชีพนานาชาติ</div>
+          <div style="font-size:11.5px;color:var(--text3);margin-top:3px" data-k="awS">ประเภท Innovation &amp; Invention · 2562</div>
+        </div>
+
+      </div><!-- /sb -->
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- PORTFOLIO -->
+<section id="portfolio" class="sec">
+  <div class="wrap">
+    <div class="sec-hdr">
+      <div class="sec-lbl" data-k="pLbl">Portfolio</div>
+      <h2 class="sec-ttl" data-k="pTtl">ผลงานที่ภาคภูมิใจ</h2>
+      <p class="sec-sub" data-k="pSub">ระบบที่ผ่านการพัฒนาและใช้งานจริงในองค์กรชั้นนำ</p>
+    </div>
+    <div class="pl" id="pl">
+
+      <div class="pc" style="--cac:#e05252;--cib:#fdf0f0" data-d="0">
+        <div class="pi">🛒</div>
+        <div class="pm">
+          <div class="pname" data-k="p1n">E-Commerce System · โรงพยาบาลกรุงเทพ (BDMS)</div>
+          <div class="pdesc" data-k="p1d">ระบบซื้อขายสินค้าและบริการทางการแพทย์ออนไลน์ รองรับการชำระเงิน จัดการออเดอร์ และเชื่อมต่อกับระบบ Internal ของโรงพยาบาล</div>
+          <!-- <div class="chips"><span class="chip">PHP/Laravel</span><span class="chip">MySQL</span><span class="chip">GCP</span><span class="chip">REST API</span></div> -->
+        </div>
+        <div class="pr">
+          <div class="tag tag-g"><span class="dot" style="background:var(--green)"></span><span data-k="tDone">เสร็จแล้ว</span></div>
+          <div class="pr-org">BDMS / ITBOXDESIGN</div>
+        </div>
+      </div>
+
+      <div class="pc" style="--cac:#e8aa40;--cib:#fdf3e3" data-d="60">
+        <div class="pi">📦</div>
+        <div class="pm">
+          <div class="pname" data-k="p2n">ระบบคลังสินค้า &amp; Fulfillment · PK Fulfillment</div>
+          <div class="pdesc" data-k="p2d">จัดการรับ-จัดส่งสินค้า ติดตาม Stock ออกแบบ Report และ Workflow สำหรับ Fulfillment Center</div>
+          <!-- <div class="chips"><span class="chip">PHP/Laravel</span><span class="chip">PostgreSQL</span><span class="chip">Docker</span><span class="chip">GCP</span></div> -->
+        </div>
+        <div class="pr">
+          <div class="tag tag-g"><span class="dot" style="background:var(--green)"></span><span data-k="tDone">เสร็จแล้ว</span></div>
+          <div class="pr-org">ServeRich</div>
+        </div>
+      </div>
+
+      <div class="pc" style="--cac:#4a90d9;--cib:#eef5fd" data-d="120">
+        <div class="pi">💳</div>
+        <div class="pm">
+          <div class="pname" data-k="p3n">ระบบลงทะเบียน Visa · ABTC (APEC Business Travel Card)</div>
+          <div class="pdesc" data-k="p3d">ระบบยื่นคำขอ APEC Business Travel Card ออนไลน์ พร้อมติดตามสถานะ จัดการเอกสาร และแจ้งเตือนอัตโนมัติ</div>
+          <!-- <div class="chips"><span class="chip">PHP/Laravel</span><span class="chip">SQL Server</span><span class="chip">GCP</span></div> -->
+        </div>
+        <div class="pr">
+          <div class="tag tag-g"><span class="dot" style="background:var(--green)"></span><span data-k="tDone">เสร็จแล้ว</span></div>
+          <div class="pr-org">ABTC / ITBOXDESIGN</div>
+        </div>
+      </div>
+
+      <div class="pc" style="--cac:#2d8a5f;--cib:#e8f5ee" data-d="180">
+        <div class="pi">💰</div>
+        <div class="pm">
+          <div class="pname" data-k="p4n">ระบบ Payroll</div>
+          <div class="pdesc" data-k="p4d">คำนวณเงินเดือนพนักงาน จัดการค่าล่วงเวลา ภาษี และสวัสดิการ พร้อมออก Payslip อัตโนมัติ</div>
+          <!-- <div class="chips"><span class="chip">PHP/Laravel</span><span class="chip">MySQL</span><span class="chip">REST API</span><span class="chip">Docker</span></div> -->
+        </div>
+        <div class="pr">
+          <div class="tag tag-g"><span class="dot" style="background:var(--green)"></span><span data-k="tDone">เสร็จแล้ว</span></div>
+          <div class="pr-org">NC Entertainment</div>
+        </div>
+      </div>
+
+      <div class="pc" style="--cac:#7c5cbf;--cib:#f3eeff" data-d="240">
+        <div class="pi">🖥️</div>
+        <div class="pm">
+          <div class="pname" data-k="p5n">ระบบ CMS เว็บองค์กร</div>
+          <div class="pdesc" data-k="p5d">พัฒนา CMS สำหรับเว็บไซต์องค์กรหลายแห่ง รองรับจัดการเนื้อหา ข่าวสาร และหน้าแสดงผล Dynamic</div>
+          <!-- <div class="chips"><span class="chip">PHP/Laravel</span><span class="chip">Angular</span><span class="chip">MySQL</span></div> -->
+        </div>
+        <div class="pr">
+          <div class="tag tag-g"><span class="dot" style="background:var(--green)"></span><span data-k="tDone">เสร็จแล้ว</span></div>
+          <div class="pr-org">ITBOXDESIGN</div>
+        </div>
+      </div>
+
+      <div class="pc" style="--cac:#e07040;--cib:#fdf0e8" data-d="300">
+        <div class="pi">💬</div>
+        <div class="pm">
+          <div class="pname" data-k="p6n">ระบบ Real-time Chat</div>
+          <div class="pdesc" data-k="p6d">แชทแบบ Real-time ด้วย WebSocket รองรับกลุ่ม แชทส่วนตัว การแจ้งเตือน และ Cloud Configuration</div>
+          <!-- <div class="chips"><span class="chip">WebSocket</span><span class="chip">PHP/Laravel</span><span class="chip">Docker</span></div> -->
+        </div>
+        <div class="pr">
+          <div class="tag tag-o"><span class="dot pulse" style="background:var(--orange)"></span><span data-k="tWip">กำลังพัฒนา</span></div>
+          <div class="pr-org">NC Entertainment</div>
+        </div>
+      </div>
+
+      <div class="pc" style="--cac:#3a9dbe;--cib:#e8f6fb" data-d="360">
+        <div class="pi">🏪</div>
+        <div class="pm">
+          <div class="pname" data-k="p7n">ระบบ POS (Point of Sale)</div>
+          <div class="pdesc" data-k="p7d">จัดการการขาย ออกใบเสร็จ ติดตาม Stock รายงานยอดขาย และรองรับการชำระเงินหลายรูปแบบ</div>
+          <!-- <div class="chips"><span class="chip">PHP/Laravel</span><span class="chip">Vue.js</span><span class="chip">MySQL</span></div> -->
+        </div>
+        <div class="pr">
+          <div class="tag tag-o"><span class="dot pulse" style="background:var(--orange)"></span><span data-k="tWip">กำลังพัฒนา</span></div>
+          <div class="pr-org">NC Entertainment</div>
+        </div>
+      </div>
+
+      <div class="pc" style="--cac:#8b5cf6;--cib:#f3effe" data-d="420">
+        <div class="pi">🗂️</div>
+        <div class="pm">
+          <div class="pname" data-k="p8n">ระบบ Asset Management</div>
+          <div class="pdesc" data-k="p8d">จัดการทรัพย์สินองค์กร ติดตามสถานะ การยืม-คืน บันทึกประวัติการซ่อมบำรุง และรายงานมูลค่าทรัพย์สินแบบ Real-time</div>
+          <!-- <div class="chips"><span class="chip">PHP/Laravel</span><span class="chip">MySQL</span><span class="chip">REST API</span><span class="chip">Docker</span></div> -->
+        </div>
+        <div class="pr">
+          <div class="tag tag-o"><span class="dot pulse" style="background:var(--orange)"></span><span data-k="tWip">กำลังพัฒนา</span></div>
+          <div class="pr-org">NC Entertainment</div>
+        </div>
+      </div>
+
+    </div><!-- /pl -->
+
+    <!-- Collaborated -->
+    <div>
+      <div class="sec-lbl" style="margin-top:60px;margin-bottom:22px" data-k="coLbl">Collaborated With</div>
+      <div class="cg" id="cg">
+        <div class="cc" data-d="0">
+          <div class="cl-logo" style="background:linear-gradient(135deg,#c0392b,#e74c3c)">BDMS</div>
+          <div class="cl-name">Bangkok Hospital</div>
+          <div class="cl-sub" data-k="coBDMS">Bangkok Dusit Medical Services</div>
+        </div>
+        <div class="cc" data-d="80">
+          <div class="cl-logo" style="background:linear-gradient(135deg,#1a5276,#2980b9)">ABTC</div>
+          <div class="cl-name">ABTC</div>
+          <div class="cl-sub" data-k="coABTC">APEC Business Travel Card</div>
+        </div>
+        <div class="cc" data-d="160">
+          <div class="cl-logo" style="background:linear-gradient(135deg,#117a65,#1abc9c)">PK</div>
+          <div class="cl-name">PK Fulfillment</div>
+          <div class="cl-sub" data-k="coMCF">Warehouse &amp; Fulfillment</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- CONTACT -->
+<section id="contact" class="sec">
+  <div class="wrap">
+    <div class="con-g">
+      <div>
+        <div class="sec-lbl" data-k="coLbl2">Contact</div>
+        <h2 class="con-h" data-k="conH">สนใจ<em>ร่วมงาน</em><br>กันไหม?</h2>
+        <p class="con-b" data-k="conB">เปิดรับโอกาสใหม่ทั้ง Remote, Hybrid และ Onsite หากมีโปรเจกต์ที่น่าสนใจหรืออยากพูดคุย ทักมาได้เลย!</p>
+        <div class="con-links">
+          <a href="mailto:aofgh123@gmail.com" class="clink">
+            <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            <div><div class="ci-lbl">EMAIL</div><strong>aofgh123@gmail.com</strong></div>
+          </a>
+          <a href="tel:0956878014" class="clink">
+            <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.77a16 16 0 0 0 6.29 6.29l1.84-1.84a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            <div><div class="ci-lbl">PHONE</div><strong>095-687-8014</strong></div>
+          </a>
+          <div class="clink">
+            <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            <div><div class="ci-lbl">LOCATION</div><strong data-k="conAddr">สมุทรปราการ, ไทย</strong></div>
+          </div>
+        </div>
+      </div>
+      <div class="con-r">
+        <div class="avail">
+          <div class="adot"></div>
+          <span class="atxt" data-k="avail">พร้อมรับงาน · Available for hire</span>
+        </div>
+        <div class="ci-list">
+          <div class="ci-row"><span class="ci-ico">💼</span><div><div class="ci-lbl" data-k="ciPos">ตำแหน่งที่สนใจ</div><div class="ci-val">Full Stack / Backend Developer</div></div></div>
+          <div class="ci-row"><span class="ci-ico">💵</span><div><div class="ci-lbl" data-k="ciSal">เงินเดือนที่คาดหวัง</div><div class="ci-val">30,000 – 35,000 THB</div></div></div>
+          <div class="ci-row"><span class="ci-ico">🗓️</span><div><div class="ci-lbl" data-k="ciAv">พร้อมเริ่มงาน</div><div class="ci-val" data-k="ciAvV">พร้อมทันที</div></div></div>
+          <div class="ci-row"><span class="ci-ico">🏠</span><div><div class="ci-lbl" data-k="ciWm">รูปแบบงาน</div><div class="ci-val">Remote / Hybrid / Onsite</div></div></div>
+        </div>
+        <div class="soc">
+          <a href="https://github.com/MethaPRx07" target="_blank" class="sb-btn">
+            <svg viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+            GitHub
+          </a>
+          <a href="https://www.linkedin.com/in/metha-putthaseng-78ab2a184/" target="_blank" class="sb-btn">
+            <svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+            LinkedIn
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="ft">
+      <div class="ft-copy">© 2026 Metha Putthaseng</div>
+      <div class="ft-r" data-k="ftR">Built with ❤️ · Full Stack Developer</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ── TRANSLATIONS ── */
+const T = {
+th:{
+  navHome:'หน้าแรก',navResume:'ประวัติ',navPortfolio:'ผลงาน',navContact:'ติดต่อ',
+  heroEye:'พร้อมรับงานใหม่ · Available for hire',
+  heroRole:'Full Stack Developer &amp; Backend Engineer',
+  heroDesc:'นักพัฒนาระบบกว่า 5 ปี เชี่ยวชาญ PHP · Python · Rust และ modern JS frameworks สร้างระบบที่มั่นคง รวดเร็ว และตอบโจทย์ธุรกิจ',
+  heroBtnWork:'ดูผลงาน',heroBtnContact:'ติดต่อฉัน',
+  statYears:'ปีประสบการณ์',statProj:'ระบบที่พัฒนา',statOrg:'องค์กรชั้นนำ',
+  resLbl:'Experience',resTtl:'ประสบการณ์ &amp; ทักษะ',resSub:'เส้นทางการทำงาน 5+ ปี ผ่านหลากหลายอุตสาหกรรม',
+  r0role:'Full Stack Developer',r0co:'NC Entertainment Co., Ltd.',r0dt:'ม.ค. 2569 – ปัจจุบัน',
+  r0li:'<li>ออกแบบและพัฒนา RESTful API และโครงสร้างฐานข้อมูล</li><li>พัฒนาระบบ Payroll และ Asset Management</li><li>พัฒนาระบบ Real-time Chat ด้วย WebSocket + Cloud</li><li>จัดการ Docker environment สำหรับ Deploy ระบบ</li>',
+  r1role:'Full Stack Developer',r1co:'ITBOXDESIGN Company Limited',r1dt:'ม.ค. 2567 – ธ.ค. 2568',
+  r1li:'<li>พัฒนาและบำรุงรักษาเว็บไซต์ Production หลายโปรเจกต์</li><li>แก้ไข Security Vulnerabilities จากรายงาน Penetration Testing</li><li>เชื่อมต่อและใช้งาน Google Cloud Services</li><li>ตั้งค่าและดูแล Server สำหรับ Deploy เว็บไซต์</li>',
+  r2role:'Full Stack Developer',r2co:'ServeRich Company Limited',r2dt:'ก.พ. 2566 – ธ.ค. 2566',
+  r2li:'<li>พัฒนา Web App ระบบคลังสินค้าและ Fulfillment</li><li>ออกแบบโครงสร้างฐานข้อมูลตาม Business Requirements</li><li>ออกแบบและพัฒนา Report ระบบ</li><li>วิเคราะห์และแก้ไขปัญหา Production</li>',
+  r3role:'Backend Developer',r3co:'Wolves Corporation',r3dt:'ส.ค. 2563 – เม.ย. 2564',
+  r3li:'<li>พัฒนา RESTful API สำหรับ Web &amp; Mobile</li><li>ออกแบบฐานข้อมูลและ Automated Test ด้วย Python Selenium</li><li>แก้ไข Bug ผ่านกระบวนการ QA อย่างเป็นระบบ</li>',
+  r4role:'Full Stack Developer',r4co:'Siphaya Construction Co., Ltd.',r4dt:'ส.ค. 2562 – เม.ย. 2563',
+  r4li:'<li>พัฒนา Internal Web App ด้วย PHP CodeIgniter</li><li>ออกแบบฐานข้อมูลและทดสอบแอปพลิเคชัน</li>',
+  cInfo:'ข้อมูลส่วนตัว',iAge:'อายุ',iGen:'เพศ',iGenV:'ชาย',iHW:'ส่วนสูง/น้ำหนัก',iSt:'สถานะ',iStV:'โสด',iMil:'การทหาร',iMilV:'ผ่านแล้ว',iWm:'รูปแบบงาน',
+  cSkill:'ทักษะ',lvEx:'ดีเยี่ยม',lvGd:'ดี',lvMd:'ปานกลาง',
+  cLang:'ภาษา',lTH:'ภาษาไทย',lEN:'ภาษาอังกฤษ',
+  cEdu:'การศึกษา',
+  e1:'ปวส. สาขาเทคโนโลยีสารสนเทศ',e1s:'วิทยาลัยเทคโนโลยีอรรถวิทย์พณิชยการ',e1d:'2568 – ปัจจุบัน',
+  e2:'ปวช. สาขาคอมพิวเตอร์ธุรกิจ',e2s:'วิทยาลัยเทคโนโลยีอรรถวิทย์พณิชยการ',e2d:'2558 – 2561 · GPA 2.97',
+  aw:'รางวัลแข่งขันทักษะวิชาชีพนานาชาติ',awS:'ประเภท Innovation &amp; Invention · 2562',
+  pLbl:'Portfolio',pTtl:'ผลงานที่ภาคภูมิใจ',pSub:'ระบบที่ผ่านการพัฒนาและใช้งานจริงในองค์กรชั้นนำ',
+  tDone:'เสร็จแล้ว',tWip:'กำลังพัฒนา',
+  p1n:'E-Commerce System · โรงพยาบาลกรุงเทพ (BDMS)',
+  p1d:'ระบบซื้อขายสินค้าและบริการทางการแพทย์ออนไลน์ รองรับการชำระเงิน จัดการออเดอร์ และเชื่อมต่อกับระบบ Internal ของโรงพยาบาล',
+  p2n:'ระบบคลังสินค้า &amp; Fulfillment · PK Fulfillment',
+  p2d:'จัดการรับ-จัดส่งสินค้า ติดตาม Stock ออกแบบ Report และ Workflow สำหรับ Fulfillment Center',
+  p3n:'ระบบลงทะเบียน Visa · ABTC (APEC Business Travel Card)',
+  p3d:'ระบบยื่นคำขอ APEC Business Travel Card ออนไลน์ พร้อมติดตามสถานะ จัดการเอกสาร และแจ้งเตือนอัตโนมัติ',
+  p4n:'ระบบ Payroll',p4d:'คำนวณเงินเดือนพนักงาน จัดการค่าล่วงเวลา ภาษี และสวัสดิการ พร้อมออก Payslip อัตโนมัติ',
+  p5n:'ระบบ CMS เว็บองค์กร',p5d:'พัฒนา CMS สำหรับเว็บไซต์องค์กรหลายแห่ง รองรับจัดการเนื้อหา ข่าวสาร และหน้าแสดงผล Dynamic',
+  p6n:'ระบบ Real-time Chat',p6d:'แชทแบบ Real-time ด้วย WebSocket รองรับกลุ่ม แชทส่วนตัว การแจ้งเตือน และ Cloud Configuration',
+  p7n:'ระบบ POS (Point of Sale)',p7d:'จัดการการขาย ออกใบเสร็จ ติดตาม Stock รายงานยอดขาย และรองรับการชำระเงินหลายรูปแบบ',
+  p8n:'ระบบ Asset Management',p8d:'จัดการทรัพย์สินองค์กร ติดตามสถานะ การยืม-คืน บันทึกประวัติการซ่อมบำรุง และรายงานมูลค่าทรัพย์สินแบบ Real-time',
+  coLbl:'Collaborated With',coBDMS:'Bangkok Dusit Medical Services',coABTC:'APEC Business Travel Card',coMCF:'Warehouse &amp; Fulfillment',
+  coLbl2:'Contact',conH:'สนใจ<em>ร่วมงาน</em><br>กันไหม?',
+  conB:'เปิดรับโอกาสใหม่ทั้ง Remote, Hybrid และ Onsite หากมีโปรเจกต์ที่น่าสนใจหรืออยากพูดคุย ทักมาได้เลย!',
+  conAddr:'สมุทรปราการ, ไทย',avail:'พร้อมรับงาน · Available for hire',
+  ciPos:'ตำแหน่งที่สนใจ',ciSal:'เงินเดือนที่คาดหวัง',ciAv:'พร้อมเริ่มงาน',ciAvV:'พร้อมทันที',ciWm:'รูปแบบงาน',
+  ftR:'Built with ❤️ · Full Stack Developer',
+},
+en:{
+  navHome:'Home',navResume:'Resume',navPortfolio:'Portfolio',navContact:'Contact',
+  heroEye:'Open to new opportunities · Available for hire',
+  heroRole:'Full Stack Developer &amp; Backend Engineer',
+  heroDesc:'5+ years building robust web systems, APIs &amp; workflows. Skilled in PHP, Python, Rust and modern JS frameworks.',
+  heroBtnWork:'View Work',heroBtnContact:'Contact Me',
+  statYears:'Years Exp.',statProj:'Systems Built',statOrg:'Top Orgs',
+  resLbl:'Experience',resTtl:'Experience &amp; Skills',resSub:'5+ year journey across multiple industries',
+  r0role:'Full Stack Developer',r0co:'NC Entertainment Co., Ltd.',r0dt:'Jan 2026 – Present',
+  r0li:'<li>Designed and developed RESTful APIs &amp; database structures</li><li>Developed Payroll and Asset Management systems</li><li>Built Real-time Chat with WebSocket &amp; Cloud config</li><li>Managed Docker environments for deployment</li>',
+  r1role:'Full Stack Developer',r1co:'ITBOXDESIGN Company Limited',r1dt:'Jan 2024 – Dec 2025',
+  r1li:'<li>Developed and maintained production websites across multiple clients</li><li>Resolved security vulnerabilities from penetration testing reports</li><li>Integrated Google Cloud services</li><li>Configured and managed servers for web deployment</li>',
+  r2role:'Full Stack Developer',r2co:'ServeRich Company Limited',r2dt:'Feb 2023 – Dec 2023',
+  r2li:'<li>Built web apps for warehouse management and fulfillment</li><li>Designed database structures aligned with business requirements</li><li>Created system reports and resolved production issues</li>',
+  r3role:'Backend Developer',r3co:'Wolves Corporation',r3dt:'Aug 2020 – Apr 2021',
+  r3li:'<li>Developed RESTful APIs for web &amp; mobile apps</li><li>Designed databases &amp; built automated tests with Python Selenium</li><li>Resolved bugs through structured QA processes</li>',
+  r4role:'Full Stack Developer',r4co:'Siphaya Construction Co., Ltd.',r4dt:'Aug 2019 – Apr 2020',
+  r4li:'<li>Built internal web apps using PHP CodeIgniter</li><li>Designed databases and tested applications</li>',
+  cInfo:'Personal Info',iAge:'Age',iGen:'Gender',iGenV:'Male',iHW:'Height / Weight',iSt:'Status',iStV:'Single',iMil:'Military',iMilV:'Completed',iWm:'Work Mode',
+  cSkill:'Skills',lvEx:'Excellent',lvGd:'Good',lvMd:'Intermediate',
+  cLang:'Languages',lTH:'Thai',lEN:'English',
+  cEdu:'Education',
+  e1:'Higher Vocational Certificate (IT)',e1s:'Attawit Commercial Technology College',e1d:'2025 – Present',
+  e2:'Vocational Certificate (Business Computer)',e2s:'Attawit Commercial Technology College',e2d:'2015 – 2018 · GPA 2.97',
+  aw:'International Vocational Skills Competition',awS:'Innovation &amp; Invention Category · 2019',
+  pLbl:'Portfolio',pTtl:'Featured Projects',pSub:'Real-world systems built for leading organizations',
+  tDone:'Completed',tWip:'In Progress',
+  p1n:'E-Commerce System · Bangkok Hospital (BDMS)',
+  p1d:'Online medical products &amp; services platform with payment processing, order management, and internal hospital system integration.',
+  p2n:'Warehouse &amp; Fulfillment System · PK Fulfillment',
+  p2d:'Manages inbound/outbound logistics, stock tracking, operational reporting, and workflows for a fulfillment center.',
+  p3n:'Visa Registration System · ABTC (APEC Business Travel Card)',
+  p3d:'Online APEC Business Travel Card application system with status tracking, document management, and automated notifications.',
+  p4n:'Payroll System',p4d:'Employee salary calculation covering overtime, tax, and benefits management with automated payslip generation.',
+  p5n:'Corporate CMS Website',p5d:'CMS platforms for multiple corporate websites supporting dynamic content, news, articles, and landing page management.',
+  p6n:'Real-time Chat System',p6d:'Real-time chat built with WebSocket supporting group/private messaging, notifications, and cloud configuration.',
+  p7n:'POS System (Point of Sale)',p7d:'Sales management, receipt printing, stock tracking, sales reports, and multiple payment method support.',
+  p8n:'Asset Management System',p8d:'Manages organizational assets, tracks status, handles borrowing/returning, records maintenance history, and reports asset values in real-time.',
+  coLbl:'Collaborated With',coBDMS:'Bangkok Dusit Medical Services',coABTC:'APEC Business Travel Card',coMCF:'Warehouse &amp; Fulfillment',
+  coLbl2:'Contact',conH:'Let\'s <em>work</em><br>together!',
+  conB:'Open to new opportunities — Remote, Hybrid, or Onsite. If you have an interesting project or just want to chat, feel free to reach out!',
+  conAddr:'Samut Prakan, Thailand',avail:'Available for hire · Open to opportunities',
+  ciPos:'Interested Position',ciSal:'Expected Salary',ciAv:'Available From',ciAvV:'Immediately',ciWm:'Work Mode',
+  ftR:'Built with ❤️ · Full Stack Developer',
+}};
+
+let lang = 'th';
+function applyLang() {
+  const d = T[lang];
+  document.documentElement.lang = lang;
+  document.querySelectorAll('[data-k]').forEach(el => {
+    const k = el.dataset.k;
+    if (d[k] !== undefined) el.innerHTML = d[k];
+  });
+  document.getElementById('langLbl').textContent = lang === 'th' ? 'EN' : 'TH';
+}
+document.getElementById('langBtn').addEventListener('click', () => {
+  lang = lang === 'th' ? 'en' : 'th';
+  applyLang();
+});
+
+/* ── THEME ── */
+let dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+function applyTheme() {
+  document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+  document.getElementById('iSun').style.display  = dark ? 'none'  : 'block';
+  document.getElementById('iMoon').style.display = dark ? 'block' : 'none';
+  document.getElementById('themeLbl').textContent = dark ? 'Light' : 'Dark';
+}
+document.getElementById('themeBtn').addEventListener('click', () => { dark = !dark; applyTheme(); });
+applyTheme();
+
+/* ── MOBILE MENU ── */
+const burger = document.getElementById('burger');
+const mob    = document.getElementById('mobMenu');
+burger.addEventListener('click', () => mob.classList.toggle('open'));
+mob.querySelectorAll('a').forEach(a => a.addEventListener('click', () => mob.classList.remove('open')));
+
+/* ── ACTIVE NAV ── */
+const secs = ['hero','resume','portfolio','contact'];
+const nls  = document.querySelectorAll('#navLinks a[data-sec]');
+window.addEventListener('scroll', () => {
+  const y = window.scrollY + 90;
+  secs.forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    if (el.offsetTop <= y && el.offsetTop + el.offsetHeight > y)
+      nls.forEach(a => a.classList.toggle('act', a.dataset.sec === id));
+  });
+}, {passive:true});
+
+/* ── SCROLL ANIMATIONS ── */
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    const delay = parseInt(e.target.dataset.d || 0);
+    setTimeout(() => e.target.classList.add('vis'), delay);
+    io.unobserve(e.target);
+  });
+}, {threshold: 0.1});
+
+document.querySelectorAll('.tli, .pc, .cc').forEach(el => io.observe(el));
+
+/* ── SKILL BARS ── */
+const skIO = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    e.target.querySelectorAll('.sk-fill').forEach(f => f.classList.add('anim'));
+    skIO.unobserve(e.target);
+  });
+}, {threshold: 0.3});
+const skillCard = document.querySelector('#resume .sb .card:nth-child(2)');
+if (skillCard) skIO.observe(skillCard);
+
+/* ── INIT ── */
+applyLang();
+</script>
+</body>
+</html>
